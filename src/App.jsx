@@ -73,6 +73,13 @@ export default function App() {
   const current = steps[pos] || null;
   const windowStart = current ? (current.windowStart ?? 0) : 0;
 
+  // Calculate complexity metrics
+  const totalComparisons = steps.filter(s => s.lastComparison).length;
+  const worstCaseComparisons = algorithm === "KMP" 
+    ? text.length + pattern.length 
+    : text.length * pattern.length;
+  const currentComparisons = steps.slice(0, pos + 1).filter(s => s.lastComparison).length;
+
   return (
     <div className="app" ref={containerRef}>
       <h1>Pattern Matching Visualizer</h1>
@@ -150,6 +157,134 @@ export default function App() {
         </div>
       </div>
 
+      {/* Step Log and Time Complexity side by side */}
+      <div style={{ display: 'flex', gap: '16px', marginTop: '18px' }}>
+        <div className="log-box" style={{ flex: '1', marginTop: '0', borderTop: 'none', paddingTop: '0' }}>
+          <h3>Step Log</h3>
+          <div className="log-list">
+            {steps.map((s, i) => (
+              <div key={i} className={`log-item ${i===pos ? "active" : ""}`}>
+                <div className="log-index">#{i+1}</div>
+                <div className="log-text">{s.summary}</div>
+              </div>
+            ))}
+            {!steps.length && <div className="muted">No steps — press Run</div>}
+          </div>
+        </div>
+
+        {/* Time Complexity Visualization */}
+        <div style={{ 
+          flex: '1', 
+          border: '1px solid #e6eef6', 
+          padding: '12px', 
+          borderRadius: '8px',
+          background: 'white'
+        }}>
+          <h3>Time Complexity</h3>
+          
+          {/* Algorithm Info */}
+          <div style={{ 
+            background: 'linear-gradient(to right, #eef2ff, #dbeafe)', 
+            borderRadius: '8px', 
+            padding: '12px', 
+            marginBottom: '12px' 
+          }}>
+            <h4 style={{ fontSize: '16px', fontWeight: '700', color: '#3730a3', marginBottom: '8px' }}>
+              {algorithm === "KMP" ? 'KMP Algorithm' : 'Boyer–Moore Algorithm'}
+            </h4>
+            <div style={{ fontSize: '13px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span style={{ color: '#555' }}>Best Case:</span>
+                <span style={{ fontFamily: 'monospace', fontWeight: '700', color: '#059669' }}>
+                  {algorithm === "KMP" ? 'O(n)' : 'O(n/m)'}
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span style={{ color: '#555' }}>Average Case:</span>
+                <span style={{ fontFamily: 'monospace', fontWeight: '700', color: '#2563eb' }}>
+                  {algorithm === "KMP" ? 'O(n)' : 'O(n)'}
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#555' }}>Worst Case:</span>
+                <span style={{ fontFamily: 'monospace', fontWeight: '700', color: '#dc2626' }}>
+                  {algorithm === "KMP" ? 'O(n+m)' : 'O(n·m)'}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Current Execution Stats */}
+          {generated && (
+            <div style={{ background: '#f8fafc', borderRadius: '8px', padding: '12px' }}>
+              <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#333', marginBottom: '12px' }}>
+                Current Execution
+              </h4>
+              <div style={{ marginBottom: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
+                  <span style={{ color: '#555' }}>Comparisons</span>
+                  <span style={{ fontWeight: '700' }}>{currentComparisons} / {totalComparisons}</span>
+                </div>
+                <div style={{ width: '100%', background: '#e5e7eb', borderRadius: '9999px', height: '8px' }}>
+                  <div
+                    style={{
+                      width: `${totalComparisons > 0 ? (currentComparisons / totalComparisons) * 100 : 0}%`,
+                      background: '#4f46e5',
+                      height: '8px',
+                      borderRadius: '9999px',
+                      transition: 'width 300ms ease'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '4px' }}>
+                  <span style={{ color: '#555' }}>Efficiency</span>
+                  <span style={{ fontWeight: '700' }}>
+                    {totalComparisons > 0 
+                      ? `${((1 - totalComparisons / worstCaseComparisons) * 100).toFixed(1)}%`
+                      : '0%'
+                    }
+                  </span>
+                </div>
+                <div style={{ width: '100%', background: '#e5e7eb', borderRadius: '9999px', height: '8px' }}>
+                  <div
+                    style={{
+                      width: `${totalComparisons > 0 ? ((1 - totalComparisons / worstCaseComparisons) * 100) : 0}%`,
+                      background: '#22c55e',
+                      height: '8px',
+                      borderRadius: '9999px'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ paddingTop: '8px', borderTop: '1px solid #e5e7eb' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '2px' }}>
+                  <span style={{ color: '#555' }}>Total Comparisons:</span>
+                  <span style={{ fontWeight: '700', color: '#4f46e5' }}>{totalComparisons}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '2px' }}>
+                  <span style={{ color: '#555' }}>Worst Case:</span>
+                  <span style={{ fontWeight: '700', color: '#6b7280' }}>{worstCaseComparisons}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
+                  <span style={{ color: '#555' }}>Matches Found:</span>
+                  <span style={{ fontWeight: '700', color: '#059669' }}>{matches.length}</span>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {!generated && (
+            <div className="muted" style={{ textAlign: 'center', padding: '24px' }}>
+              Press Run to see complexity analysis
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="tables-and-grid">
         <div className="tables">
           {algorithm === "KMP" ? <KMPTable pattern={pattern} /> : <BMTable pattern={pattern} />}
@@ -172,7 +307,6 @@ export default function App() {
                     const eq = compareGrid[i][j];
                     const isCurrent = current && current.lastComparison && current.lastComparison.textIndex === i && current.lastComparison.patternIndex === j;
                     return (
-                      // Added onClick, a 'clickable' class, and a title tooltip
                       <div 
                         key={j} 
                         className={`compare-cell ${eq ? "eq" : "neq"} ${isCurrent ? "current-cell" : ""} clickable`}
@@ -189,19 +323,6 @@ export default function App() {
           ) : <div className="muted">Comparison grid will appear after Run</div>}
         </div>
       </div>
-
-      <div className="log-box">
-        <h3>Step Log</h3>
-        <div className="log-list">
-          {steps.map((s, i) => (
-            <div key={i} className={`log-item ${i===pos ? "active" : ""}`}>
-              <div className="log-index">#{i+1}</div>
-              <div className="log-text">{s.summary}</div>
-            </div>
-          ))}
-          {!steps.length && <div className="muted">No steps — press Run</div>}
-        </div>
-      </div>
     </div>
   );
 }
@@ -212,7 +333,7 @@ function KMPTable({ pattern }) {
   const { lps, log } = computeLPS(pattern);
   return (
     <div className="pre-table">
-      <h3>KMP — LPS</h3>
+      <h3>KMP – LPS</h3>
       <div className="lps-row">
         {Array.from(pattern).map((ch, i) => (
           <div key={i} className="table-cell">
