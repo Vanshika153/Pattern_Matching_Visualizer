@@ -1,17 +1,22 @@
 body { background-color: #fff0e6; margin: 0; }
 .app { font-family: Inter, Arial, sans-serif; padding: 18px; max-width: 1100px; margin: 24px auto; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
-h1 { margin-bottom: 12px; }
+h1 { margin-bottom: 12px; font-size: 32px; color: #0f172a; font-weight: 800; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; letter-spacing: -0.5px; }
+h3 { font-size: 18px; color: #1e293b; font-weight: 700; margin-bottom: 10px; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; letter-spacing: -0.3px; }
+h4 { font-size: 15px; color: #334155; font-weight: 700; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
 .controls { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
-.inputs label { display:block; margin-bottom:6px; font-size:13px; }
-.inputs input, .inputs select { display:block; padding:6px 8px; margin-top:4px; width:240px; }
+.inputs label { display:block; margin-bottom:6px; font-size:14px; font-weight: 500; color: #334155; }
+.inputs input, .inputs select { display:block; padding:8px 10px; margin-top:4px; width:240px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 6px; transition: border-color 150ms ease; }
+.inputs input:focus, .inputs select:focus { outline: none; border-color: #0b74ff; }
 .buttons { display:flex; gap:8px; align-items:center; }
-.btn { padding:8px 12px; border-radius:6px; border:1px solid #ccc; background:white; cursor:pointer; }
+.btn { padding:9px 16px; border-radius:6px; border:1.5px solid #cbd5e1; background:white; cursor:pointer; font-size: 14px; font-weight: 500; color: #475569; transition: all 150ms ease; }
+.btn:hover { background: #f8fafc; border-color: #94a3b8; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
 .btn.primary { background:#0b74ff; color:white; border-color:#0b74ff; }
+.btn.primary:hover { background: #0a5dd6; border-color: #0a5dd6; box-shadow: 0 2px 12px rgba(11, 116, 255, 0.3); }
 .visual { margin-top:18px; border:1px solid #e5e7eb; padding:12px; border-radius:10px; }
 .text-row { display:flex; gap:6px; margin-bottom:8px; }
 .cell { width:38px; height:48px; border-radius:6px; border:1px solid #ddd; display:flex; flex-direction:column; align-items:center; justify-content:center; background:white; }
-.cell .ch { font-weight:600; }
-.cell .idx { font-size:11px; color:#666; margin-top:4px; }
+.cell .ch { font-weight:700; font-size: 16px; color: #1e293b; }
+.cell .idx { font-size:11px; color:#64748b; margin-top:4px; font-weight: 500; }
 .cell.match { box-shadow: inset 0 0 0 2px rgba(34,197,94,0.12); border-color:#22c55e; background:#ecfdf5; }
 .cell.mismatch { box-shadow: inset 0 0 0 2px rgba(239,68,68,0.08); border-color:#ef4444; background:#fff1f2; }
 .cell.found { outline:3px solid rgba(34,197,94,0.18); }
@@ -20,29 +25,32 @@ h1 { margin-bottom: 12px; }
 .pattern-cell { width:38px; height:48px; border-radius:6px; border:1px dashed #cbd5e1; display:flex; align-items:center; justify-content:center; background:#f8fafc; }
 .pattern-cell.match { background:#ecfdf5; border-color:#22c55e; }
 .pattern-cell.mismatch { background:#fff1f2; border-color:#ef4444; }
-.action-box { margin-top:8px; display:flex; gap:18px; align-items:center; }
-.action-text { color:#333; }
+.action-box { margin-top:8px; display:flex; gap:18px; align-items:center; font-size: 14px; }
+.action-text { color:#475569; }
 .matches { color:#065f46; font-weight:600; }
 .tables-and-grid { display:flex; gap:16px; margin-top:18px; }
 .pre-table { border:1px solid #f1f5f9; padding:8px; border-radius:8px; width:360px; }
 .lps-row, .row { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
 .table-cell { width:58px; height:48px; border:1px solid #e6e9ef; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:6px; background:#fff; }
-.table-cell .ch { font-weight:700; }
-.table-cell .val { font-size:13px; color:#333; margin-top:6px; }
+.table-cell .ch { font-weight:700; font-size: 15px; color: #1e293b; }
+.table-cell .val { font-size:13px; color:#0b74ff; margin-top:6px; font-weight: 600; }
 .compare-grid-box { flex:1; border:1px solid #e6eef6; padding:8px; border-radius:8px; max-height:360px; overflow:auto; }
 .compare-grid { display:flex; flex-direction:column; gap:4px; }
 .compare-row { display:flex; }
-.compare-cell { width:44px; height:36px; display:flex; align-items:center; justify-content:center; border:1px solid #ddd; border-radius:4px; margin-right:4px; background:white; }
-.compare-cell.header { background:#f1f5f9; border-color:#cbd5e1; font-weight:700; }
+.compare-cell { width:44px; height:36px; display:flex; align-items:center; justify-content:center; border:1px solid #ddd; border-radius:4px; margin-right:4px; background:white; font-size: 14px; font-weight: 600; }
+.compare-cell.header { background:#f1f5f9; border-color:#cbd5e1; font-weight:700; color: #475569; }
 .compare-cell.eq { background:#ecfdf5; border-color:#22c55e; }
 .compare-cell.neq { background:#fff1f2; border-color:#ef4444; }
 .compare-cell.current-cell { outline:3px solid rgba(59,130,246,0.18); }
 .header.empty { width:44px; background:transparent; border:0; }
 .log-box { margin-top:16px; border-top:1px dashed #e6eef6; padding-top:12px; }
 .log-list { max-height:180px; overflow:auto; }
-.log-item { display:flex; gap:8px; padding:6px; border-radius:6px; align-items:center; }
+.log-item { display:flex; gap:8px; padding:6px; border-radius:6px; align-items:center; font-size: 13px; }
 .log-item.active { background:#eef2ff; border:1px solid #c7d2fe; }
-.small { font-size:11px; color:#555; }
-.muted { color:#8892a6; }
-.compare-cell.clickable { cursor: pointer; transition: outline 150ms ease; }
-.compare-cell.clickable:hover { outline: 2px solid #0b74ff; outline-offset: -2px; }
+.log-index { font-weight: 600; color: #6366f1; }
+.log-text { color: #334155; }
+.small { font-size:11px; color:#64748b; font-weight: 500; }
+.tiny { font-size: 12px; color: #64748b; margin-top: 8px; }
+.muted { color:#94a3b8; font-size: 13px; }
+.compare-cell.clickable { cursor: pointer; transition: all 150ms ease; }
+.compare-cell.clickable:hover { outline: 2px solid #0b74ff; outline-offset: -2px; transform: scale(1.08); box-shadow: 0 2px 8px rgba(11, 116, 255, 0.2); }
